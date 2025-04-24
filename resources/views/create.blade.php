@@ -93,7 +93,7 @@
 <body>
     <div class="nav">
         <div class="nav-links">
-            <a href="beranda.blade.php">Beranda</a>
+            <a href="{{route('article.index')}}">Beranda</a>
             <a href="create.blade.php">Create Artikel</a>
             <a href="/profile">Profile</a>
         </div>
