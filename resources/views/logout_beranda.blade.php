@@ -122,16 +122,23 @@
 <body>
   <div class="nav">
     <div class="nav-links">
-      <a href="{{route('article.index')}}">Beranda</a>
-      <a href="{{ route('article.create') }}">Create Artikel</a>
+      <a href="{{ route('article.index') }}">Beranda</a>
       <a href="/profile">Profile</a>
     </div>
     <div class="auth-buttons">
-      <a href="{{ route('login') }}" class="login">Log in</a>
-      @if (Route::has('register'))
+      @guest
+        <a href="{{ route('login') }}" class="login">Log in</a>
         <a href="{{ route('register') }}" class="register">Register</a>
-      @endif
+      @endguest
+    
+      @auth
+        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+          @csrf
+          <button type="submit" class="register" style="background: #ef4444;">Logout</button>
+        </form>
+      @endauth
     </div>
+    
   </div>
 
   <header>
