@@ -5,6 +5,7 @@ use App\Http\Controllers\ArtikelController;
 use Illuminate\Support\Facades\Route;
 
 
+
 Route::resource('article', ArtikelController::class);
 
 
@@ -12,7 +13,7 @@ Route::get('/articles', [ArtikelController::class, 'index'])->name('article.inde
 
 Route::get('/', function () {
     return view('beranda');
-});
+})->name('beranda');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
