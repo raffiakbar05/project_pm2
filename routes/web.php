@@ -4,6 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArtikelController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::resource('article', ArtikelController::class);
+
+
+Route::get('/articles', [ArtikelController::class, 'index'])->name('article.index');
+
 Route::get('/', function () {
     return view('beranda');
 });
@@ -17,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/index', [ProfileController::class, 'edit'])->name('profile.edit');
+
 
 Route::get('/logout-beranda', function () {
     return view('logout_beranda');
