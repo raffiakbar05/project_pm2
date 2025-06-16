@@ -15,6 +15,10 @@ class Article extends Model
         'content',
         'thumbnail',
         'status',
+        'user_id',
         'published_at'
     ];
+    protected $casts = [
+    'published_at' => 'datetime',
+];
 }

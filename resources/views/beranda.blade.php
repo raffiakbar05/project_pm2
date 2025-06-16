@@ -1,143 +1,73 @@
 @extends('layouts.app')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Artikel</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<div class="min-h-screen bg-blue-100 text-gray-800">
+  <!-- Header -->
+  <header class="bg-blue-200 text-center py-8">
+    <h1 class="text-4xl font-bold text-blue-700 m-0">Website Artikel</h1>
+  </header>
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #d9e2ec; /* Warna biru keabu-abuan yang lebih gelap */
-      color: #333;
-    }
+  <!-- Container -->
+  <div class="w-11/12 max-w-4xl mx-auto py-8">
+    @if($articles->count() > 0)
+      @foreach($articles as $article)
+        @if($article->status === 'published')
+          <div class="bg-white mb-6 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <!-- Status Badge -->
+            <div class="mb-3">
+              <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                {{ ucfirst($article->status) }}
+              </span>
+              @if($article->published_at)
+                <span class="text-gray-500 text-sm ml-2">
+                  {{ $article->published_at->format('d M Y') }}
+                </span>
+              @endif
+            </div>
 
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      background: #aac8f0;
-    }
+            <!-- Article Thumbnail -->
+            @if($article->thumbnail)
+              <div class="mb-4">
+                <img src="{{ asset('images/' . $article->thumbnail) }}" 
+                     alt="{{ $article->title }}" 
+                     class="w-full h-48 object-cover rounded-lg">
+              </div>
+            @endif
 
-    .nav-links a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #1e293b;
-      font-weight: bold;
-      transition: opacity 0.3s;
-    }
-
-    .nav-links a:hover {
-      opacity: 0.8;
-    }
-
-    .auth-buttons a {
-      margin-left: 10px;
-      padding: 8px 16px;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .login {
-      background: white;
-      color: #3b82f6;
-      border: 1px solid #3b82f6;
-    }
-
-    .login:hover {
-      background: #e0f2fe;
-    }
-
-    .register {
-      background: #3b82f6;
-      color: white;
-      border: none;
-    }
-
-    .register:hover {
-      background: #2563eb;
-    }
-
-    header {
-      background: #cdd5df;
-      text-align: center;
-      padding: 30px 0;
-    }
-
-    header h1 {
-      margin: 0;
-      color: #2b6cb0;
-      font-size: 32px;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 900px;
-      margin: 30px auto;
-    }
-
-    .article {
-      background: #ffffff;
-      margin-bottom: 25px;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .article h2 {
-      margin: 0 0 10px;
-      color: #2563eb;
-    }
-
-    .article p {
-      color: #444;
-      margin-bottom: 15px;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 10px 18px;
-      background: #3b82f6;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .button:hover {
-      background: #2563eb;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    @foreach ($articles as $article)
-      <div class="article">
-        <h2>{{ $article->title }}</h2>
-        <p>{{ Str::limit($article->content, 100) }}</p>
-        <a href="{{ route('article.show', $article->id) }}" class="button">Lihat</a>
-        <a href="{{ route('article.edit', $article->id) }}" class="button" style="background: orange;">Edit</a>
-        <form action="{{ route('article.destroy', $article->id) }}" method="POST" style="display:inline;">
-          @csrf
-          @method('DELETE')
-          <button class="button" style="background: red;" onclick="return confirm('Hapus artikel ini?')">Hapus</button>
-        </form>
+            <!-- Article Title -->
+            <h2 class="text-2xl font-bold text-blue-600 mb-3">{{ $article->title }}</h2>
+            
+            <!-- Article Content Preview -->
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              {{ Str::limit(strip_tags($article->content), 150) }}
+            </p>
+            
+            <!-- Read More Button -->
+            <a href="" 
+               class="inline-block px-5 py-2.5 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors duration-300 no-underline">
+              Baca Selengkapnya
+            </a>
+          </div>
+        @endif
+      @endforeach
+    @else
+      <!-- No Articles Message -->
+      <div class="bg-white p-8 rounded-lg shadow-md text-center">
+        <h3 class="text-xl font-semibold text-gray-600 mb-4">Belum ada artikel yang dipublikasikan</h3>
+        <p class="text-gray-500">Silakan tambahkan artikel baru untuk ditampilkan di halaman ini.</p>
+        <a href="{{ route('articles.create') }}" 
+           class="inline-block mt-4 px-5 py-2.5 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors duration-300 no-underline">
+          Tambah Artikel Baru
+        </a>
       </div>
-    @endforeach
+    @endif
+
+    <!-- Pagination if needed -->
+    @if(method_exists($articles, 'links'))
+      <div class="mt-8">
+        {{ $articles->links() }}
+      </div>
+    @endif
   </div>
-</body>
-</html>
+</div>
 @endsection
