@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -120,35 +123,21 @@
   </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-links">
-      <a href="{{route('beranda')}}">Beranda</a>
-      <a href="{{ route('article.create') }}">Create Artikel</a>
-      <a href="/profile">Profile</a>
-    </div>
-    <div class="auth-buttons">
-      <a href="{{ route('login') }}" class="login">Log in</a>
-      @if (Route::has('register'))
-        <a href="{{ route('register') }}" class="register">Register</a>
-      @endif
-    </div>
-  </div>
-
-  <header>
-    <h1>Website Artikel</h1>
-  </header>
-
   <div class="container">
-    <div class="article">
-      <h2>Judul Artikel</h2>
-      <p>Isi artikel singkat...</p>
-      <a href="#" class="button">Baca Selengkapnya</a>
-    </div>
-    <div class="article">
-      <h2>Judul Artikel Lain</h2>
-      <p>Isi artikel singkat...</p>
-      <a href="#" class="button">Baca Selengkapnya</a>
-    </div>
+    @foreach ($articles as $article)
+      <div class="article">
+        <h2>{{ $article->title }}</h2>
+        <p>{{ Str::limit($article->content, 100) }}</p>
+        <a href="{{ route('article.show', $article->id) }}" class="button">Lihat</a>
+        <a href="{{ route('article.edit', $article->id) }}" class="button" style="background: orange;">Edit</a>
+        <form action="{{ route('article.destroy', $article->id) }}" method="POST" style="display:inline;">
+          @csrf
+          @method('DELETE')
+          <button class="button" style="background: red;" onclick="return confirm('Hapus artikel ini?')">Hapus</button>
+        </form>
+      </div>
+    @endforeach
   </div>
 </body>
 </html>
+@endsection

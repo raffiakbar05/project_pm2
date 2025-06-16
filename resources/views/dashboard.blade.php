@@ -145,7 +145,7 @@
   <div class="nav">
     <div class="nav-links">
       <a href="{{ route('beranda') }}">Beranda</a>
-      <a href="{{ route('create') }}">Create Artikel</a>
+      <a href="{{ route('article.create') }}">Create Artikel</a>
       <a href="/profile">Profile</a>
     </div>
     <div class="auth-buttons">

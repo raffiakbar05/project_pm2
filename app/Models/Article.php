@@ -11,7 +11,10 @@ class Article extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'content',
-        'image'
+        'thumbnail',
+        'status',
+        'published_at'
     ];
 }
